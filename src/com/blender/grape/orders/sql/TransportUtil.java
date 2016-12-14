@@ -53,6 +53,29 @@ public class TransportUtil {
         }
     }
 
+    public static void editTransport(transport Car) {
+        try {
+            Connection conn = SQLUtil.getConnection();
+            Statement stmt = conn.createStatement
+                    (ResultSet.TYPE_SCROLL_SENSITIVE,
+                            ResultSet.CONCUR_UPDATABLE);
+            String editTransportQuery = "UPDATE gp_transportas SET marke='" + Car.getMarke() + "',modelis='"
+                    + Car.getModelis() + "',talpa='" + Car.getTalpa() + "',tempimo_galia='" + Car.getGalia() +
+                    "',kuro_bako_dydis='" + Car.getBakas() + "',gedimas='" + Car.getGedimas() + "'," +
+                    "spalva='" + Car.getSpalva() + "',sanaudos='" + Car.getSanaudos() + "'," +
+                    "tecnikinio_galiojimo_data='" + Car.getTechnikine() + "' WHERE gp_transportas.id=" + Car.getID();
+            String editStateQuery = "UPDATE gp_transporto_busena SET busena=" + Car.getBusena() + " WHERE " +
+                    "gp_transporto_busena.fk_transportas=" + Car.getID();
+            conn.setAutoCommit(false);
+            stmt.addBatch(editTransportQuery);
+            stmt.addBatch(editStateQuery);
+            stmt.executeBatch();
+            conn.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static List<transport> getAllTransport() {
         List<transport> transports = new ArrayList<>();
         String getTransportQuery = "SELECT gp_transportas.id,gp_transportas.marke,gp_transportas.modelis,gp_busena.tipas FROM gp_transportas\n" +
@@ -67,6 +90,37 @@ public class TransportUtil {
                 String modelis = results.getString("modelis");
                 String busenaStr = results.getString("tipas");
                 transport Transport = new transport(id, marke, modelis, busenaStr);
+                transports.add(Transport);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return transports;
+    }
+
+    public static List<transport> getAllTransportFull() {
+        List<transport> transports = new ArrayList<>();
+        String getTransportQuery = "SELECT gp_transportas.*,gp_transporto_busena.busena,gp_busena.tipas FROM gp_transportas\n" +
+                "INNER JOIN gp_transporto_busena\n" +
+                "ON gp_transporto_busena.fk_transportas=gp_transportas.id\n" +
+                "INNER JOIN gp_busena\n" +
+                "ON gp_busena.id=gp_transporto_busena.busena";
+        try (ResultSet results = SQLUtil.executeQueryWithResult(getTransportQuery)) {
+            while (results != null && results.next()) {
+                int id = results.getInt("id");
+                String marke = results.getString("marke");
+                String modelis = results.getString("modelis");
+                String talpa = results.getString("talpa");
+                String galia = results.getString("tempimo_galia");
+                String bakas = results.getString("kuro_bako_dydis");
+                String gedimas = results.getString("gedimas");
+                String spalva = results.getString("spalva");
+                String sanaudos = results.getString("sanaudos");
+                String tech = results.getString("tecnikinio_galiojimo_data");
+                String busenaStr = results.getString("tipas");
+                int busena = results.getInt("busena");
+                transport Transport = new transport(id, marke, modelis, talpa, galia, bakas, gedimas, spalva, sanaudos,
+                        tech, busena, busenaStr);
                 transports.add(Transport);
             }
         } catch (SQLException e) {

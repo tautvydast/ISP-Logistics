@@ -38,6 +38,22 @@ public class transport {
         this.busenaStr = busenaStr;
     }
 
+    public transport(int id, String marke, String modelis, String talpa, String tempimo_galia, String kuro_bakas, String gedimas
+            , String spalva, String sanaudos, String technikine, int busena, String busenaStr){
+        this.id = id;
+        this.marke = marke;
+        this.modelis = modelis;
+        this.talpa = talpa;
+        this.tempimo_galia = tempimo_galia;
+        this.kuro_bakas = kuro_bakas;
+        this.gedimas = gedimas;
+        this.spalva = spalva;
+        this.sanaudos = sanaudos;
+        this.technikine = technikine;
+        this.busena = busena;
+        this.busenaStr = busenaStr;
+    }
+
     @Override
     public String toString() {
         return marke + " " + modelis + " " + busenaStr;
@@ -53,4 +69,13 @@ public class transport {
     public String getMarke() { return marke; }
     public String getModelis() { return modelis; }
     public String getBusenaStr() { return busenaStr; }
+    public String getTalpa() { return talpa; }
+    public String getGalia() { return tempimo_galia; }
+    public String getBakas() { return kuro_bakas; }
+    public String getGedimas() { return gedimas; }
+    public String getSpalva() { return spalva; }
+    public String getSanaudos() { return sanaudos; }
+    public String getTechnikine() { return technikine; }
+
+    public transport getTransport() { return this; }
 }

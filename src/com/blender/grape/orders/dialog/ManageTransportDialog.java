@@ -62,8 +62,8 @@ public class ManageTransportDialog  extends JDialog {
     }
 
     private void editTransport() {
-        OrderCreateDialog orderCreateDialog = new OrderCreateDialog(DialogResources.getString("TRANSPORT_EDIT_DIALOG"));
-        UIUtilities.showWindow(orderCreateDialog);
+        TransportEditChooseDialog transportEditDialog = new TransportEditChooseDialog(DialogResources.getString("TRANSPORT_EDIT_DIALOG"));
+        UIUtilities.showWindow(transportEditDialog);
     }
 
     private void deleteTransport() {
