@@ -148,7 +148,7 @@ public class SectionEditDialog extends JDialog {
             return "False input for capacity";
         }
         if (model.getCommodityAmount() > Integer.parseInt(textField2.getText())) {
-            return "Capacity should be bigger than that";
+            return "Capacity should be bigger than " + (model.getCommodityAmount() - 1);
         }
         return "";
     }
