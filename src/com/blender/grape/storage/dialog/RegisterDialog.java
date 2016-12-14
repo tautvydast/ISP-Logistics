@@ -138,7 +138,7 @@ public class RegisterDialog extends JDialog {
         setCategoryList();
         setSectionList();
 
-        fillFieldsWithFakeData();
+//        fillFieldsWithFakeData();
 
         refreshList();
     }

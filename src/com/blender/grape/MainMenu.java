@@ -87,5 +87,6 @@ public class MainMenu extends JFrame {
     private void exit() {
         setVisible(false);
         dispose();
+        System.exit(0);
     }
 }
