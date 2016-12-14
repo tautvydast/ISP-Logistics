@@ -14,15 +14,12 @@ import java.awt.*;
 /**
  * Created by Tautvydas Traška, IFF-4/2.
  */
-public class StorageManagementMenu extends JFrame {
+public class StorageManagementMenu extends JDialog {
     public StorageManagementMenu() throws HeadlessException {
-        initialize();
-    }
-
-    private void initialize() {
+        setContentPane(createContentPanel());
         setTitle(DialogResources.getString("STORAGE_MANAGEMENT_MENU_TITLE"));
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().add(createContentPanel());
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setModal(true);
         pack();
     }
 
