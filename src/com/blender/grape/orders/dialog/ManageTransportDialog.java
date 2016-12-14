@@ -67,8 +67,8 @@ public class ManageTransportDialog  extends JDialog {
     }
 
     private void deleteTransport() {
-        OrderCreateDialog manageTrasnportDialog = new OrderCreateDialog(DialogResources.getString("TRANSPORT_DELETE_DIALOG"));
-        UIUtilities.showWindow(manageTrasnportDialog);
+        TransportDeleteDialog deleteTransportDialog = new TransportDeleteDialog(DialogResources.getString("TRANSPORT_DELETE_DIALOG"));
+        UIUtilities.showWindow(deleteTransportDialog);
     }
 
 

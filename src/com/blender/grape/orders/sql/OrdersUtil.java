@@ -138,6 +138,16 @@ public class OrdersUtil {
         try {
             String updateOrderQuery = "UPDATE gp_uzsakymo_busena SET busena=" + stateId + ",keitimo_data=now() WHERE id=" + currentState;
             SQLUtil.executeQuery(updateOrderQuery);
+            if(stateId == 6 || stateId == 7){
+                String updateTransportQuery = "UPDATE gp_transporto_busena\n" +
+                        "INNER JOIN gp_uzsakymas\n" +
+                        "ON gp_transporto_busena.fk_transportas=gp_uzsakymas.fk_transportas\n" +
+                        "INNER JOIN gp_uzsakymo_busena\n" +
+                        "ON gp_uzsakymas. fk_uzsakymo_busena=gp_uzsakymo_busena.id\n" +
+                        "SET gp_transporto_busena.busena=2\n" +
+                        "WHERE gp_uzsakymo_busena.id=" + currentState;
+                SQLUtil.executeQuery(updateTransportQuery);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

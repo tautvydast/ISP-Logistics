@@ -75,10 +75,51 @@ public class TransportUtil {
         return transports;
     }
 
+    public static List<transport> getAllTransportNotOnOrder() {
+        List<transport> transports = new ArrayList<>();
+        String getTransportQuery = "SELECT gp_transportas.id,gp_transportas.marke,gp_transportas.modelis,gp_busena.tipas FROM gp_transportas\n" +
+                "INNER JOIN gp_transporto_busena\n" +
+                "ON gp_transporto_busena.fk_transportas=gp_transportas.id\n" +
+                "INNER JOIN gp_busena\n" +
+                "ON gp_busena.id=gp_transporto_busena.busena\n" +
+                "WHERE gp_busena.id!=5";
+        try (ResultSet results = SQLUtil.executeQueryWithResult(getTransportQuery)) {
+            while (results != null && results.next()) {
+                int id = results.getInt("id");
+                String marke = results.getString("marke");
+                String modelis = results.getString("modelis");
+                String busenaStr = results.getString("tipas");
+                transport Transport = new transport(id, marke, modelis, busenaStr);
+                transports.add(Transport);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return transports;
+    }
+
     public static void editTransportState(int Truck, int State) {
         try {
             String editStateQuery = "UPDATE gp_transporto_busena SET busena=" + State + ",keitimo_data=now() WHERE fk_transportas=" + Truck;
             SQLUtil.executeQuery(editStateQuery);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteTransport(int Truck) {
+        try {
+            Connection conn = SQLUtil.getConnection();
+            Statement stmt = conn.createStatement
+                    (ResultSet.TYPE_SCROLL_SENSITIVE,
+                            ResultSet.CONCUR_UPDATABLE);
+            String deleteTransportStateQuery = "DELETE FROM gp_transporto_busena WHERE fk_transportas=" + Truck;
+            String deleteTransportQuery = "DELETE FROM gp_transportas WHERE id=" + Truck;
+            conn.setAutoCommit(false);
+            stmt.addBatch(deleteTransportStateQuery);
+            stmt.addBatch(deleteTransportQuery);
+            stmt.executeBatch();
+            conn.commit();
         } catch (Exception e) {
             e.printStackTrace();
         }
