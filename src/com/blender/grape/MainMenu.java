@@ -1,5 +1,6 @@
 package com.blender.grape;
 
+import com.blender.grape.orders.dialog.OrdersManagementDialog;
 import com.blender.grape.resources.DialogResources;
 import com.blender.grape.storage.StorageManagementMenu;
 import com.blender.grape.users.PermissionService;
@@ -44,9 +45,9 @@ public class MainMenu extends JFrame {
         menuStatic.setEnabled(PermissionService.hasRightTo(Permission.MANAGE_WAREHOUSE));
         contentPanel.add(menuStatic);
 
-        MenuButton menuDynamic = new MenuButton("MAIN_MENU_DYNAMIC", this::openDynamicDialog);
-        menuDynamic.setEnabled(PermissionService.hasRightTo(Permission.MANAGE_ORDERS));
-        contentPanel.add(menuDynamic);
+        MenuButton ordersManagement = new MenuButton("MAIN_MENU_DYNAMIC", this::openManageOrdersDialog);
+        ordersManagement.setEnabled(PermissionService.hasRightTo(Permission.MANAGE_ORDERS));
+        contentPanel.add(ordersManagement);
 
         MenuButton log = new MenuButton("MAIN_MENU_LOG", this::openLogDialog);
         log.setEnabled(PermissionService.hasRightTo(Permission.OPEN_LOG));
@@ -69,6 +70,11 @@ public class MainMenu extends JFrame {
     private void openStorageManagementMenu() {
         StorageManagementMenu storageManagementMenu = new StorageManagementMenu();
         UIUtilities.showWindow(storageManagementMenu);
+    }
+
+    private void openManageOrdersDialog() {
+        OrdersManagementDialog ordersManagementDialog = new OrdersManagementDialog();
+        UIUtilities.showWindow(ordersManagementDialog);
     }
 
     private void openSaticDialog() {

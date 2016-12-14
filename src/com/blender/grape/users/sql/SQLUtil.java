@@ -62,7 +62,7 @@ public final class SQLUtil {
         }
     }
 
-    private static Connection getConnection() throws SQLException, ClassNotFoundException {
+    public static Connection getConnection() throws SQLException, ClassNotFoundException {
         if (connection == null) {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(IP+DATABASE, USER_NAME, PASSWORD);
