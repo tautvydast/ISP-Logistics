@@ -63,8 +63,8 @@ public class OrdersManagementDialog extends JDialog {
     }
 
     private void orderLog() {
-        OrderCreateDialog orderCreateDialog = new OrderCreateDialog(DialogResources.getString("ORDER_CREATE_ORDER_DIALOG"));
-        UIUtilities.showWindow(orderCreateDialog);
+        OrderLogDialog orderLogDialog = new OrderLogDialog(DialogResources.getString("ORDER_CREATE_ORDER_DIALOG"));
+        UIUtilities.showWindow(orderLogDialog);
     }
 
     private void manageTransport() {

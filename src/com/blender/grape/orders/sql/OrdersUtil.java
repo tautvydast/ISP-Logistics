@@ -134,6 +134,48 @@ public class OrdersUtil {
         return orders;
     }
 
+    public static List<order> getOrdersLog(String from, String to) {
+        List<order> orders = new ArrayList<>();
+        String getAllOrdersQuery = "SELECT gp_uzsakymas.numeris,gp_preke.pavadinimas,gp_busena.tipas,gp_uzsakymas_preke.kiekis,gp_uzsakymas.pristatymo_adresas,gp_uzsakymas.isvezimo_data,gp_uzsakymas.atvezimo_data,gp_transportas.marke,gp_transportas.modelis,gp_vadybininkas.vardas,gp_vadybininkas.pavarde FROM gp_uzsakymas\n" +
+                "INNER JOIN gp_uzsakymas_preke\n" +
+                "ON gp_uzsakymas_preke.fk_uzsakymas=gp_uzsakymas.numeris\n" +
+                "INNER JOIN gp_preke\n" +
+                "ON gp_uzsakymas_preke.fk_preke=gp_preke.prekes_kodas\n" +
+                "INNER JOIN gp_uzsakymo_busena\n" +
+                "ON gp_uzsakymo_busena.id=gp_uzsakymas.fk_uzsakymo_busena\n" +
+                "INNER JOIN gp_busena\n" +
+                "ON gp_busena.id=gp_uzsakymo_busena.busena\n" +
+                "INNER JOIN gp_transportas\n" +
+                "ON gp_uzsakymas.fk_transportas=gp_transportas.id\n" +
+                "INNER JOIN gp_vadybininkas\n" +
+                "ON gp_vadybininkas.id=gp_uzsakymas.fk_vadybininkas\n" +
+                "WHERE gp_uzsakymas.isvezimo_data BETWEEN '" + from + "' AND '" + to + "'";
+        try (ResultSet results = SQLUtil.executeQueryWithResult(getAllOrdersQuery)) {
+            while (results != null && results.next()) {
+                int UzsakymoId = results.getInt("numeris");
+                String pavadinimas = results.getString("pavadinimas");
+                int kiekis = results.getInt("kiekis");
+                String pristatymo_adresas = results.getString("pristatymo_adresas");
+                String isvezimo_data = results.getString("isvezimo_data");
+                String atvezimo_data = results.getString("atvezimo_data");
+                String busena = results.getString("tipas");
+                String marke = results.getString("marke");
+                String modelis = results.getString("modelis");
+                String vardas = results.getString("vardas");
+                String pavarde = results.getString("pavarde");
+
+                String vadybininkas = vardas + " " + pavarde;
+                String transportas = marke + " " + modelis;
+                order Order = new order(UzsakymoId,isvezimo_data,atvezimo_data,pristatymo_adresas,vadybininkas,busena,
+                        transportas,kiekis,pavadinimas);
+                orders.add(Order);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return orders;
+    }
+
     public static void editOrderState(int currentState, int stateId) {
         try {
             String updateOrderQuery = "UPDATE gp_uzsakymo_busena SET busena=" + stateId + ",keitimo_data=now() WHERE id=" + currentState;
